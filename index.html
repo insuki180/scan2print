@@ -6,218 +6,208 @@
 <title>Scan2Print</title>
 
 <style>
-  :root { --primary: #2563eb; --success: #16a34a; --error: #ef4444; --bg: #f1f5f9; }
-  
-  body { 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: var(--bg); margin: 0; padding: 20px;
-    display: flex; align-items: center; justify-content: center; min-height: 90vh; color: #0f172a; 
+  :root { --primary:#2563eb; --success:#16a34a; --error:#ef4444; --bg:#f1f5f9; }
+
+  body {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); margin:0; padding:20px;
+    display:flex; align-items:center; justify-content:center;
+    min-height:90vh; color:#0f172a;
   }
 
-  .card { 
-    background: white; width: 100%; max-width: 400px; padding: 30px; 
-    border-radius: 20px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); text-align: center; 
+  .card {
+    background:#fff; width:100%; max-width:400px; padding:30px;
+    border-radius:20px; box-shadow:0 10px 25px -5px rgba(0,0,0,.1);
+    text-align:center;
   }
 
-  /* Header */
-  .title { font-size: 24px; font-weight: 800; margin-bottom: 5px; color: #1e293b; line-height: 1.2; }
-  .subtitle { font-size: 14px; color: #64748b; margin-bottom: 30px; font-weight: 500; }
+  .title { font-size:24px; font-weight:800; margin-bottom:4px; }
+  .subtitle { font-size:13px; color:#64748b; margin-bottom:18px; }
 
-  /* Drop Zone */
-  .file-drop { 
-    border: 2px dashed #cbd5e1; border-radius: 16px; padding: 40px 20px; 
-    background: #f8fafc; cursor: pointer; position: relative; transition: all 0.2s ease; 
+  .hint {
+    font-size:13px;
+    background:#eff6ff;
+    color:#1e40af;
+    padding:10px 12px;
+    border-radius:10px;
+    margin-bottom:18px;
+    text-align:left;
   }
-  .file-drop:active { transform: scale(0.98); }
-  .file-drop.active { border-color: var(--primary); background: #eff6ff; }
-  
-  .icon { font-size: 40px; display: block; margin-bottom: 10px; }
-  .drop-text { font-size: 15px; font-weight: 600; color: #334155; }
-  input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
 
-  /* File Info */
-  .file-info { margin-top: 20px; display: none; text-align: left; background: #f1f5f9; padding: 12px; border-radius: 10px; }
-  .file-info.visible { display: flex; align-items: center; justify-content: space-between; }
-  .f-name { font-size: 13px; font-weight: 600; color: #334155; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
-  .f-size { font-size: 11px; color: #64748b; background: #e2e8f0; padding: 2px 6px; border-radius: 4px; }
-
-  /* Button */
-  .upload-btn { 
-    width: 100%; background: var(--primary); color: white; border: none; 
-    padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 700; 
-    margin-top: 20px; cursor: pointer; opacity: 0.5; pointer-events: none; transition: 0.2s; 
-    display: flex; align-items: center; justify-content: center; gap: 10px;
+  .file-drop {
+    border:2px dashed #cbd5e1;
+    border-radius:16px;
+    padding:36px 18px;
+    background:#f8fafc;
+    cursor:pointer;
+    position:relative;
+    transition:.2s;
   }
-  .upload-btn.active { opacity: 1; pointer-events: auto; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+  .file-drop.active { border-color:var(--primary); background:#eff6ff; }
+  .icon { font-size:38px; display:block; margin-bottom:8px; }
+  .drop-text { font-size:15px; font-weight:600; }
+  input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; }
 
-  /* --- SPINNER CSS --- */
+  .file-info {
+    margin-top:16px; display:none;
+    background:#f1f5f9; padding:10px;
+    border-radius:10px; text-align:left;
+  }
+  .file-info.visible { display:flex; justify-content:space-between; gap:8px; }
+  .f-name { font-size:13px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .f-size { font-size:11px; color:#64748b; }
+
+  .upload-btn {
+    width:100%; background:var(--primary); color:#fff; border:none;
+    padding:15px; border-radius:12px; font-size:16px;
+    font-weight:700; margin-top:18px;
+    opacity:.5; pointer-events:none;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+  }
+  .upload-btn.active { opacity:1; pointer-events:auto; }
+
   .spinner {
-    width: 18px; height: 18px;
-    border: 3px solid rgba(255,255,255,0.3);
-    border-radius: 50%;
-    border-top-color: #fff;
-    animation: spin 0.8s linear infinite;
-    display: none; /* Hidden by default */
+    width:18px; height:18px;
+    border:3px solid rgba(255,255,255,.3);
+    border-top-color:#fff;
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+    display:none;
   }
-  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  @keyframes spin { to { transform:rotate(360deg); } }
 
-  /* States */
-  .hidden { display: none !important; }
-  .success-view { padding: 40px 0; }
-  .check-icon { font-size: 64px; margin-bottom: 20px; animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: inline-block; }
-  @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
-  
-  .error-box { color: var(--error); background: #fef2f2; padding: 10px; border-radius: 8px; font-size: 13px; margin-top: 15px; border: 1px solid #fecaca; }
+  .hidden { display:none!important; }
+  .success-view { padding:40px 0; }
+  .check-icon { font-size:64px; margin-bottom:16px; }
+
+  .error-box {
+    color:var(--error); background:#fef2f2;
+    padding:10px; border-radius:8px;
+    font-size:13px; margin-top:14px;
+    border:1px solid #fecaca;
+  }
 </style>
 </head>
 <body>
 
 <div class="card" id="app">
-  <div style="color:#94a3b8; padding: 40px;">Verifying Shop...</div>
+  <div style="color:#94a3b8;padding:40px;">Verifying Shop…</div>
 </div>
 
 <script>
-  // --- 1. CONFIGURATION ---
-  const CLIENT_CONFIG = {
-    "shop1": {
-      name: "Downtown Print Shop",
-      url: "https://script.google.com/macros/s/AKfycbyUx1AKhV7kY9uemRGOTSZL9sxyzWnEgKgHAVCBH_vQn_WtWE6lDF0BvpaIp2aAc2mV/exec"
-    },
-    "shop2": {
-      name: "RAVI XEROX CENTRE",
-      url: "https://script.google.com/macros/s/AKfycbz5PxC9QfbSELyEAzwhPS_sem88rxaOL0QwYZLO6H3dCaCWWOmXzm_aHdhJE5jL3d_j/exec"
-    },
-    "shop3": {
-      name: "Balaji xerox",
-      url: "https://script.google.com/macros/s/AKfycbzvk3EPXaDkyYtxYGqoqL-dA-O87UfIqk0oT-ioIdPm_s2JnMwxUgbRIa8Bv7lhKMPynA/exec"
-    },
-    // Add more shops here
+/* ---------------- CONFIG ---------------- */
+const CLIENT_CONFIG = {
+  shop1:{ name:"Downtown Print Shop", url:"YOUR_SCRIPT_URL" }
+};
+
+/* ---------------- ROUTER ---------------- */
+const params = new URLSearchParams(location.search);
+const clientId = params.get("client");
+const app = document.getElementById("app");
+
+if(!clientId || !CLIENT_CONFIG[clientId]){
+  app.innerHTML = `<div class="title" style="color:#ef4444">Invalid QR</div>`;
+  throw "";
+}
+const SHOP = CLIENT_CONFIG[clientId];
+
+/* ---------------- UI ---------------- */
+app.innerHTML = `
+<div id="formView">
+  <div class="title">${SHOP.name}</div>
+  <div class="subtitle">Powered by Scan2Print</div>
+
+  <div class="hint">
+    📄 <b>File from WhatsApp?</b><br>
+    Tap Upload → Documents → WhatsApp → select your PDF
+  </div>
+
+  <div id="dropZone" class="file-drop">
+    <span class="icon">📄</span>
+    <span class="drop-text">Upload PDF</span>
+    <input type="file" id="fileInput" accept=".pdf,application/pdf">
+  </div>
+
+  <div id="fileInfo" class="file-info">
+    <span class="f-name" id="fName"></span>
+    <span class="f-size" id="fSize"></span>
+  </div>
+
+  <button id="uploadBtn" class="upload-btn" onclick="uploadFile()">
+    <span class="spinner" id="spinner"></span>
+    <span id="btnText">Send to Shop</span>
+  </button>
+
+  <div id="errorMsg" class="error-box hidden"></div>
+</div>
+
+<div id="successView" class="success-view hidden">
+  <div class="check-icon">✅</div>
+  <div class="title">Sent!</div>
+  <div class="subtitle">Please inform the shopkeeper</div>
+  <button class="upload-btn active"
+    style="background:#f1f5f9;color:#334155"
+    onclick="location.reload()">Send Another</button>
+</div>
+`;
+
+/* ---------------- LOGIC ---------------- */
+const fileInput = document.getElementById("fileInput");
+const dropZone = document.getElementById("dropZone");
+const fileInfo = document.getElementById("fileInfo");
+const uploadBtn = document.getElementById("uploadBtn");
+const errorMsg = document.getElementById("errorMsg");
+const spinner = document.getElementById("spinner");
+const btnText = document.getElementById("btnText");
+
+let selectedFile = null;
+
+fileInput.addEventListener("change",()=>{
+  selectedFile = fileInput.files[0];
+  if(!selectedFile) return;
+
+  if(selectedFile.type !== "application/pdf"){
+    errorMsg.innerText = "Only PDF files allowed.";
+    errorMsg.classList.remove("hidden");
+    fileInput.value="";
+    return;
+  }
+
+  dropZone.classList.add("active");
+  document.querySelector(".drop-text").innerText = "Change PDF";
+  document.getElementById("fName").innerText = selectedFile.name;
+  document.getElementById("fSize").innerText =
+    (selectedFile.size/1048576).toFixed(1)+" MB";
+  fileInfo.classList.add("visible");
+  uploadBtn.classList.add("active");
+  errorMsg.classList.add("hidden");
+});
+
+function uploadFile(){
+  if(!selectedFile) return;
+  uploadBtn.classList.remove("active");
+  spinner.style.display="block";
+  btnText.innerText="Sending…";
+
+  const reader = new FileReader();
+  reader.onload=e=>{
+    fetch(SHOP.url,{
+      method:"POST",
+      mode:"no-cors",
+      body:JSON.stringify({
+        shop:SHOP.name,
+        fileName:selectedFile.name,
+        mimeType:selectedFile.type,
+        fileData:e.target.result.split(",")[1]
+      })
+    }).then(()=>{
+      formView.classList.add("hidden");
+      successView.classList.remove("hidden");
+    });
   };
-
-  // --- 2. ROUTER ---
-  const params = new URLSearchParams(window.location.search);
-  const clientId = params.get("client");
-  const app = document.getElementById("app");
-
-  if (!clientId || !CLIENT_CONFIG[clientId]) {
-    app.innerHTML = `
-      <div class="icon">🚫</div>
-      <div class="title" style="color:#ef4444">Invalid Shop</div>
-      <div class="subtitle">Please scan a valid QR code.</div>
-    `;
-    throw new Error("Invalid Client");
-  }
-
-  const SHOP = CLIENT_CONFIG[clientId];
-
-  // --- 3. RENDER UI ---
-  app.innerHTML = `
-    <div id="formView">
-      <div class="title">${SHOP.name}</div>
-      <div class="subtitle">Powered by Scan2Print</div>
-
-      <div id="dropZone" class="file-drop">
-        <span class="icon">📄</span>
-        <span class="drop-text">Tap to select file</span>
-        <input type="file" id="fileInput">
-      </div>
-
-      <div id="fileInfo" class="file-info">
-        <span class="f-name" id="fName"></span>
-        <span class="f-size" id="fSize"></span>
-      </div>
-
-      <button id="uploadBtn" class="upload-btn" onclick="uploadFile()">
-        <span class="spinner" id="btnSpinner"></span>
-        <span id="btnText">Upload File</span>
-      </button>
-      
-      <div id="errorMsg" class="error-box hidden"></div>
-    </div>
-
-    <div id="successView" class="success-view hidden">
-      <span class="check-icon">✅</span>
-      <div class="title">Sent!</div>
-      <div class="subtitle">Please tell the shopkeeper.</div>
-      <button class="upload-btn active" style="background:#f1f5f9; color:#334155; margin-top:10px" onclick="location.reload()">Send Another</button>
-    </div>
-  `;
-
-  // --- 4. LOGIC ---
-  const fileInput = document.getElementById("fileInput");
-  const dropZone = document.getElementById("dropZone");
-  const fileInfo = document.getElementById("fileInfo");
-  const uploadBtn = document.getElementById("uploadBtn");
-  const errorMsg = document.getElementById("errorMsg");
-  
-  // Spinner Elements
-  const btnSpinner = document.getElementById("btnSpinner");
-  const btnText = document.getElementById("btnText");
-
-  let selectedFile = null;
-
-  fileInput.addEventListener("change", () => {
-    selectedFile = fileInput.files[0];
-    if (!selectedFile) return;
-
-    // UX Updates
-    dropZone.classList.add("active");
-    document.querySelector(".drop-text").innerText = "Change File";
-    
-    // File Details
-    document.getElementById("fName").innerText = selectedFile.name;
-    document.getElementById("fSize").innerText = (selectedFile.size / (1024*1024)).toFixed(1) + " MB";
-    fileInfo.classList.add("visible");
-    
-    // Activate Button
-    uploadBtn.classList.add("active");
-    btnText.innerText = "Upload File";
-    errorMsg.classList.add("hidden");
-  });
-
-  function uploadFile() {
-    if (!selectedFile) return;
-
-    // --- SPINNER LOGIC START ---
-    uploadBtn.classList.remove("active"); // Disable click
-    btnText.innerText = "Sending...";     // Change text
-    btnSpinner.style.display = "block";   // Show spinner
-    // --- SPINNER LOGIC END ---
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const base64 = e.target.result.split(",")[1];
-      
-      fetch(SHOP.url, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          shop: SHOP.name,
-          fileName: selectedFile.name,
-          mimeType: selectedFile.type,
-          fileData: base64
-        })
-      })
-      .then(() => {
-        document.getElementById("formView").classList.add("hidden");
-        document.getElementById("successView").classList.remove("hidden");
-      })
-      .catch(() => {
-        // Reset Button on Error
-        btnText.innerText = "Retry";
-        btnSpinner.style.display = "none";
-        uploadBtn.classList.add("active");
-        
-        errorMsg.innerText = "Upload failed. Please try again.";
-        errorMsg.classList.remove("hidden");
-      });
-    };
-    reader.readAsDataURL(selectedFile);
-  }
+  reader.readAsDataURL(selectedFile);
+}
 </script>
 
 </body>
-
 </html>
-
