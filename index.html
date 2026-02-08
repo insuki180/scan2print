@@ -6,190 +6,260 @@
 <title>Scan2Print</title>
 
 <style>
-  :root { --primary:#2563eb; --success:#16a34a; --error:#ef4444; --bg:#f1f5f9; }
+:root{
+  --blue:#2563eb;
+  --green:#16a34a;
+  --bg:#f1f5f9;
+  --text:#0f172a;
+  --muted:#64748b;
+}
 
-  body {
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    background:var(--bg); margin:0; padding:20px;
-    display:flex; align-items:center; justify-content:center;
-    min-height:90vh; color:#0f172a;
-  }
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);
+  margin:0; padding:20px;
+  display:flex; justify-content:center; align-items:center;
+  min-height:95vh; color:var(--text);
+}
 
-  .card {
-    background:#fff; width:100%; max-width:400px; padding:30px;
-    border-radius:20px; box-shadow:0 10px 25px -5px rgba(0,0,0,.1);
-    text-align:center;
-  }
+.card{
+  background:#fff;
+  width:100%; max-width:420px;
+  padding:28px;
+  border-radius:20px;
+  box-shadow:0 10px 25px -5px rgba(0,0,0,.1);
+  text-align:center;
+}
 
-  .title { font-size:24px; font-weight:800; margin-bottom:4px; }
-  .subtitle { font-size:13px; color:#64748b; margin-bottom:18px; }
+.title{font-size:24px;font-weight:800;margin-bottom:4px}
+.subtitle{font-size:13px;color:var(--muted);margin-bottom:18px}
 
-  .hint {
-    font-size:13px;
-    background:#eff6ff;
-    color:#1e40af;
-    padding:10px 12px;
-    border-radius:10px;
-    margin-bottom:18px;
-    text-align:left;
-  }
+.hint{
+  background:#eff6ff;
+  color:#1e40af;
+  font-size:13px;
+  padding:10px 12px;
+  border-radius:12px;
+  text-align:left;
+  margin-bottom:20px;
+}
 
-  .file-drop {
-    border:2px dashed #cbd5e1;
-    border-radius:16px;
-    padding:36px 18px;
-    background:#f8fafc;
-    cursor:pointer;
-    position:relative;
-    transition:.2s;
-  }
-  .file-drop.active { border-color:var(--primary); background:#eff6ff; }
-  .icon { font-size:38px; display:block; margin-bottom:8px; }
-  .drop-text { font-size:15px; font-weight:600; }
-  input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; }
+/* UPLOAD BOXES */
+.upload-box{
+  border:2px dashed;
+  border-radius:16px;
+  padding:28px 18px;
+  margin-bottom:14px;
+  cursor:pointer;
+  position:relative;
+  transition:.2s;
+}
 
-  .file-info {
-    margin-top:16px; display:none;
-    background:#f1f5f9; padding:10px;
-    border-radius:10px; text-align:left;
-  }
-  .file-info.visible { display:flex; justify-content:space-between; gap:8px; }
-  .f-name { font-size:13px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .f-size { font-size:11px; color:#64748b; }
+.upload-box input{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  cursor:pointer;
+}
 
-  .upload-btn {
-    width:100%; background:var(--primary); color:#fff; border:none;
-    padding:15px; border-radius:12px; font-size:16px;
-    font-weight:700; margin-top:18px;
-    opacity:.5; pointer-events:none;
-    display:flex; align-items:center; justify-content:center; gap:10px;
-  }
-  .upload-btn.active { opacity:1; pointer-events:auto; }
+.upload-box .icon{
+  font-size:34px;
+  margin-bottom:6px;
+}
 
-  .spinner {
-    width:18px; height:18px;
-    border:3px solid rgba(255,255,255,.3);
-    border-top-color:#fff;
-    border-radius:50%;
-    animation:spin .8s linear infinite;
-    display:none;
-  }
-  @keyframes spin { to { transform:rotate(360deg); } }
+.upload-box .label{
+  font-size:15px;
+  font-weight:700;
+}
 
-  .hidden { display:none!important; }
-  .success-view { padding:40px 0; }
-  .check-icon { font-size:64px; margin-bottom:16px; }
+/* PDF */
+.pdf-box{
+  border-color:var(--blue);
+  background:#eff6ff;
+}
+.pdf-box .label{color:var(--blue)}
 
-  .error-box {
-    color:var(--error); background:#fef2f2;
-    padding:10px; border-radius:8px;
-    font-size:13px; margin-top:14px;
-    border:1px solid #fecaca;
-  }
+/* IMAGE / OTHER */
+.other-box{
+  border-color:var(--green);
+  background:#ecfdf5;
+}
+.other-box .label{color:var(--green)}
+
+.file-info{
+  display:none;
+  margin-top:14px;
+  background:#f1f5f9;
+  padding:10px;
+  border-radius:10px;
+  text-align:left;
+  font-size:13px;
+}
+.file-info.visible{display:flex;justify-content:space-between;gap:10px}
+.f-name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.f-size{color:var(--muted)}
+
+.upload-btn{
+  width:100%;
+  margin-top:18px;
+  padding:15px;
+  border:none;
+  border-radius:14px;
+  font-size:16px;
+  font-weight:800;
+  color:#fff;
+  opacity:.5;
+  pointer-events:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+
+.upload-btn.active{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.spinner{
+  width:18px;height:18px;
+  border:3px solid rgba(255,255,255,.3);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  display:none;
+}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.hidden{display:none!important}
+.success-view{padding:40px 0}
+.check{font-size:64px;margin-bottom:14px}
+
+.error{
+  margin-top:14px;
+  background:#fef2f2;
+  color:#b91c1c;
+  padding:10px;
+  border-radius:10px;
+  font-size:13px;
+}
 </style>
 </head>
+
 <body>
 
 <div class="card" id="app">
-  <div style="color:#94a3b8;padding:40px;">Verifying Shop…</div>
+  <div style="color:#94a3b8;padding:40px">Verifying shop…</div>
 </div>
 
 <script>
-/* ---------------- CONFIG ---------------- */
-const CLIENT_CONFIG = {
-  shop1:{ name:"Downtown Print Shop", url:"YOUR_SCRIPT_URL" }
+/* ------------ CONFIG ------------ */
+const CLIENT_CONFIG={
+  shop1:{
+    name:"Downtown Print Shop",
+    url:"YOUR_APPS_SCRIPT_URL"
+  }
 };
 
-/* ---------------- ROUTER ---------------- */
-const params = new URLSearchParams(location.search);
-const clientId = params.get("client");
-const app = document.getElementById("app");
+/* ------------ ROUTER ------------ */
+const params=new URLSearchParams(location.search);
+const clientId=params.get("client");
+const app=document.getElementById("app");
 
-if(!clientId || !CLIENT_CONFIG[clientId]){
-  app.innerHTML = `<div class="title" style="color:#ef4444">Invalid QR</div>`;
+if(!clientId||!CLIENT_CONFIG[clientId]){
+  app.innerHTML="<div class='title' style='color:red'>Invalid QR</div>";
   throw "";
 }
-const SHOP = CLIENT_CONFIG[clientId];
+const SHOP=CLIENT_CONFIG[clientId];
 
-/* ---------------- UI ---------------- */
-app.innerHTML = `
+/* ------------ UI ------------ */
+app.innerHTML=`
 <div id="formView">
   <div class="title">${SHOP.name}</div>
   <div class="subtitle">Powered by Scan2Print</div>
 
   <div class="hint">
-    📄 <b>File from WhatsApp?</b><br>
-    Tap Upload → Documents → WhatsApp → select your PDF
+    📤 <b>Uploading from WhatsApp?</b><br>
+    • PDFs → Documents → WhatsApp<br>
+    • Images → Images → WhatsApp
   </div>
 
-  <div id="dropZone" class="file-drop">
-    <span class="icon">📄</span>
-    <span class="drop-text">Upload PDF</span>
-    <input type="file" id="fileInput" accept=".pdf,application/pdf">
+  <div class="upload-box pdf-box">
+    <div class="icon">📄</div>
+    <div class="label">Upload PDF (Printing)</div>
+    <input type="file" id="pdfInput" accept=".pdf,application/pdf">
   </div>
 
-  <div id="fileInfo" class="file-info">
+  <div class="upload-box other-box">
+    <div class="icon">🖼️</div>
+    <div class="label">Upload Images / Other Files</div>
+    <input type="file" id="otherInput"
+      accept="image/*,.doc,.docx,.zip,.rar,.ppt,.pptx,.txt">
+  </div>
+
+  <div class="file-info" id="fileInfo">
     <span class="f-name" id="fName"></span>
     <span class="f-size" id="fSize"></span>
   </div>
 
-  <button id="uploadBtn" class="upload-btn" onclick="uploadFile()">
+  <button id="uploadBtn" class="upload-btn">
     <span class="spinner" id="spinner"></span>
     <span id="btnText">Send to Shop</span>
   </button>
 
-  <div id="errorMsg" class="error-box hidden"></div>
+  <div id="error" class="error hidden"></div>
 </div>
 
 <div id="successView" class="success-view hidden">
-  <div class="check-icon">✅</div>
+  <div class="check">✅</div>
   <div class="title">Sent!</div>
   <div class="subtitle">Please inform the shopkeeper</div>
   <button class="upload-btn active"
-    style="background:#f1f5f9;color:#334155"
+    style="background:#e5e7eb;color:#111"
     onclick="location.reload()">Send Another</button>
 </div>
 `;
 
-/* ---------------- LOGIC ---------------- */
-const fileInput = document.getElementById("fileInput");
-const dropZone = document.getElementById("dropZone");
-const fileInfo = document.getElementById("fileInfo");
-const uploadBtn = document.getElementById("uploadBtn");
-const errorMsg = document.getElementById("errorMsg");
-const spinner = document.getElementById("spinner");
-const btnText = document.getElementById("btnText");
+/* ------------ LOGIC ------------ */
+let selectedFile=null;
+let selectedColor=null;
 
-let selectedFile = null;
+const pdfInput=document.getElementById("pdfInput");
+const otherInput=document.getElementById("otherInput");
+const fileInfo=document.getElementById("fileInfo");
+const uploadBtn=document.getElementById("uploadBtn");
+const spinner=document.getElementById("spinner");
+const btnText=document.getElementById("btnText");
+const error=document.getElementById("error");
 
-fileInput.addEventListener("change",()=>{
-  selectedFile = fileInput.files[0];
-  if(!selectedFile) return;
+pdfInput.onchange=()=>handleFile(pdfInput.files[0],"blue");
+otherInput.onchange=()=>handleFile(otherInput.files[0],"green");
 
-  if(selectedFile.type !== "application/pdf"){
-    errorMsg.innerText = "Only PDF files allowed.";
-    errorMsg.classList.remove("hidden");
-    fileInput.value="";
-    return;
-  }
+function handleFile(file,color){
+  if(!file)return;
+  selectedFile=file;
+  selectedColor=color;
 
-  dropZone.classList.add("active");
-  document.querySelector(".drop-text").innerText = "Change PDF";
-  document.getElementById("fName").innerText = selectedFile.name;
-  document.getElementById("fSize").innerText =
-    (selectedFile.size/1048576).toFixed(1)+" MB";
+  document.getElementById("fName").innerText=file.name;
+  document.getElementById("fSize").innerText=
+    (file.size/1048576).toFixed(1)+" MB";
+
   fileInfo.classList.add("visible");
   uploadBtn.classList.add("active");
-  errorMsg.classList.add("hidden");
-});
+  uploadBtn.style.background =
+    color==="blue"?"var(--blue)":"var(--green)";
+  error.classList.add("hidden");
+}
 
-function uploadFile(){
-  if(!selectedFile) return;
+uploadBtn.onclick=()=>{
+  if(!selectedFile)return;
+
   uploadBtn.classList.remove("active");
   spinner.style.display="block";
   btnText.innerText="Sending…";
 
-  const reader = new FileReader();
+  const reader=new FileReader();
   reader.onload=e=>{
     fetch(SHOP.url,{
       method:"POST",
@@ -206,7 +276,7 @@ function uploadFile(){
     });
   };
   reader.readAsDataURL(selectedFile);
-}
+};
 </script>
 
 </body>
