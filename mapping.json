@@ -1,4 +1,17 @@
 {
-  "GVLC001": "https://script.google.com/macros/s/AKfycbyUx1AKhV7kY9uemRGOTSZL9sxyzWnEgKgHAVCBH_vQn_WtWE6lDF0BvpaIp2aAc2mV/exec",
+  "GVLC001": "",
   "SHOP002": "https://script.google.com/macros/s/AKfycbzvk3EPXaDkyYtxYGqoqL-dA-O87UfIqk0oT-ioIdPm_s2JnMwxUgbRIa8Bv7lhKMPynA/exec"
+}
+{
+  "gvlc001": {
+    "endpoint": "https://script.google.com/macros/s/AKfycbyUx1AKhV7kY9uemRGOTSZL9sxyzWnEgKgHAVCBH_vQn_WtWE6lDF0BvpaIp2aAc2mV/exec",
+    "token": "gvlc001_secure_93",
+    "shopName": "GVLC Prints"
+  },
+
+  "shop002": {
+    "endpoint": "https://script.google.com/macros/s/AKfycbYYYYYYY/exec",
+    "token": "shop002_secure_77",
+    "shopName": "City Xerox"
+  }
 }
