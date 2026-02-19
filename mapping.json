@@ -9,5 +9,11 @@
     "endpoint": "https://script.google.com/macros/s/AKfycbYYYYYYY/exec",
     "token": "shop002_secure_77",
     "shopName": "City Xerox"
-  }
+  },
+  "newshop123": {
+  "endpoint": "YOUR_NEW_APPS_SCRIPT_URL",
+  "token": "newshop123_secure_45",
+  "shopName": "New Shop Name"
 }
+}
+
