@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Opening Scan2Print...</title>
+<script>
+function openApp(){
+  const params=new URLSearchParams(location.search);
+  const client=params.get("client");
+
+  // Try opening app
+  window.location.href="scan2print://shop?shopId="+client;
+
+  // Fallback to web after 1200ms
+  setTimeout(()=>{
+    window.location.href="index.html?client="+client;
+  },1200);
+}
+</script>
+</head>
+<body onload="openApp()">
+<p style="font-family:sans-serif;text-align:center;margin-top:40vh">
+Opening Scan2Print...
+</p>
+</body>
+</html>
